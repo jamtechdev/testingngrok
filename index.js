@@ -12,10 +12,14 @@ const saveSession = async () => {
   fs.writeFileSync(SESSION_FILE_PATH, JSON.stringify(cookies));
 };
 
+// Load session cookies from a file
 const loadSession = async () => {
   if (fs.existsSync(SESSION_FILE_PATH)) {
-    const cookies = JSON.parse(fs.readFileSync(SESSION_FILE_PATH));
+    const cookies = JSON.parse(fs.readFileSync(SESSION_FILE_PATH, 'utf8'));
     await ig.state.deserializeCookieJar(cookies);
+    console.log("Session loaded");
+  } else {
+    console.log("No session file found, proceeding with login");
   }
 };
 
