@@ -3,7 +3,7 @@ const axios = require("axios");
 const app = express();
 app.use(express.json());
 const { IgApiClient } = require("instagram-private-api");
-const fs = require('fs');
+const fs = require("fs");
 const SESSION_FILE_PATH = "./ig_session.json";
 
 // store session
@@ -15,7 +15,7 @@ const saveSession = async () => {
 // Load session cookies from a file
 const loadSession = async () => {
   if (fs.existsSync(SESSION_FILE_PATH)) {
-    const cookies = JSON.parse(fs.readFileSync(SESSION_FILE_PATH, 'utf8'));
+    const cookies = JSON.parse(fs.readFileSync(SESSION_FILE_PATH, "utf8"));
     await ig.state.deserializeCookieJar(cookies);
     console.log("Session loaded");
   } else {
@@ -270,47 +270,47 @@ app.post("/webhook/outgoing", async (req, res) => {
   return res.sendStatus(200);
 });
 
-// const VERIFY_TOKEN = "navneet12";
+const VERIFY_TOKEN = "navneet12";
 
-// app.get("/webhook", (req, res) => {
-//   const mode = req.query["hub.mode"];
-//   const token = req.query["hub.verify_token"];
-//   const challenge = req.query["hub.challenge"];
+app.get("/webhook", (req, res) => {
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
 
-//   console.log("GET request received", req.query);
+  console.log("GET request received", req.query);
 
-//   if (mode && token) {
-//     if (mode === "subscribe" && token === VERIFY_TOKEN) {
-//       console.log("WEBHOOK_VERIFIED");
-//       res.status(200).send(challenge);
-//     } else {
-//       console.log("Forbidden: Invalid token");
-//       res.sendStatus(403);
-//     }
-//   } else {
-//     console.log("Bad Request: Missing mode or token");
-//     res.sendStatus(400);
-//   }
-// });
+  if (mode && token) {
+    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+      console.log("WEBHOOK_VERIFIED");
+      res.status(200).send(challenge);
+    } else {
+      console.log("Forbidden: Invalid token");
+      res.sendStatus(403);
+    }
+  } else {
+    console.log("Bad Request: Missing mode or token");
+    res.sendStatus(400);
+  }
+});
 
-// app.post("/webhook", (req, res) => {
-//   const body = req.body;
-//   console.log("POST request received", JSON.stringify(body, null, 2));
+app.post("/webhook", (req, res) => {
+  const body = req.body;
+  console.log("POST request received", JSON.stringify(body, null, 2));
 
-//   if (body.object === "instagram") {
-//     body.entry.forEach((entry) => {
-//       const webhookEvent = entry.messaging[0];
-//       console.log("Instagram Event", webhookEvent);
+  if (body.object === "instagram") {
+    body.entry.forEach((entry) => {
+      const webhookEvent = entry.messaging[0];
+      console.log("Instagram Event", webhookEvent);
 
-//       // Handle the event here
-//     });
+      // Handle the event here
+    });
 
-//     res.status(200).send("EVENT_RECEIVED");
-//   } else {
-//     console.log("Not Found: Object is not Instagram");
-//     res.sendStatus(404);
-//   }
-// });
+    res.status(200).send("EVENT_RECEIVED");
+  } else {
+    console.log("Not Found: Object is not Instagram");
+    res.sendStatus(404);
+  }
+});
 
 const PORT = process.env.PORT || 8090;
 app.listen(PORT, () => {
