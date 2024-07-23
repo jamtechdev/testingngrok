@@ -47,7 +47,7 @@ const getNewMessages = async () => {
   ig.state.generateDevice("heystak.io");
   console.log("IG_USERNAME:", "heystakio");
 
-  await ig.account.login("heystak.io", "Heystak12!");
+  await ig.account.login("heystakio", "Heystak12!");
   console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
 
   const inboxFeed = ig.feed.directInbox();
