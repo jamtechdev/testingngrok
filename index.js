@@ -3,6 +3,20 @@ const axios = require("axios");
 const app = express();
 app.use(express.json());
 const { IgApiClient } = require("instagram-private-api");
+const SESSION_FILE_PATH = "./ig_session.json";
+
+// store session
+const saveSession = async () => {
+  const cookies = await ig.state.serializeCookieJar();
+  fs.writeFileSync(SESSION_FILE_PATH, JSON.stringify(cookies));
+};
+
+const loadSession = async () => {
+  if (fs.existsSync(SESSION_FILE_PATH)) {
+    const cookies = JSON.parse(fs.readFileSync(SESSION_FILE_PATH));
+    await ig.state.deserializeCookieJar(cookies);
+  }
+};
 
 // Initialize Supabase client
 const { createClient } = require("@supabase/supabase-js");
@@ -44,11 +58,38 @@ const getToken = async () => {
 const ig = new IgApiClient();
 
 const loginToInstagram = async () => {
-  ig.state.generateDevice("heystakio");
-  console.log("IG_USERNAME:", "heystakio");
-  console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
+  ig.state.generateDevice("heystak.io");
+  await loadSession();
 
-  await ig.account.login("heystakio", "Heystak12!");
+  try {
+    await ig.account.login("heystakio", "Heystak12!");
+    console.log("Logged into Instagram");
+    await saveSession();
+  } catch (e) {
+    if (e.message.includes("checkpoint_required")) {
+      console.log("Checkpoint error triggered");
+      await ig.challenge.auto(true); // Requesting verification code
+
+      console.log("Challenge URL:", ig.state.checkpoint); // Checkpoint URL
+      const { code } = await promptUserForCode(); // Custom function to get code from user
+      await ig.challenge.sendSecurityCode(code);
+    } else {
+      console.error("Error logging in:", e);
+    }
+  }
+};
+const promptUserForCode = async () => {
+  const readline = require("readline").createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    readline.question("Enter the security code: ", (code) => {
+      readline.close();
+      resolve({ code });
+    });
+  });
 };
 
 const getNewMessages = async () => {
