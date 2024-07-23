@@ -236,7 +236,7 @@ app.post("/webhook/outgoing", async (req, res) => {
   return res.sendStatus(200); // Corrected to use sendStatus
 });
 
-app.get("/messaging-webhook", (req, res) => {
+app.get("/webhook", (req, res) => {
   const VERIFY_TOKEN = "navneet123"; // Replace with your verify token
 
   const mode = req.query["hub.mode"];
@@ -253,6 +253,23 @@ app.get("/messaging-webhook", (req, res) => {
     }
   } else {
     res.sendStatus(400);
+  }
+});
+app.post("/webhook", (req, res) => {
+  const body = req.body;
+  console.log(body);
+
+  if (body.object === "instagram") {
+    body.entry.forEach((entry) => {
+      const webhookEvent = entry.messaging[0];
+      console.log(webhookEvent);
+
+      // Handle the event here
+    });
+
+    res.status(200).send("EVENT_RECEIVED");
+  } else {
+    res.sendStatus(404);
   }
 });
 
