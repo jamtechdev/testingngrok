@@ -216,7 +216,7 @@ app.post("/webhook/incoming", async (req, res) => {
       return res.sendStatus(200);
     } else {
       inComingDetails.push(userData);
-      await getNewMessages();
+      // await getNewMessages();
       // await callAnotherApi(userData);
     }
     // console.log(userData, "neet");
@@ -262,7 +262,7 @@ app.post("/webhook", (req, res) => {
   if (body.object === "instagram") {
     body.entry.forEach((entry) => {
       const webhookEvent = entry.messaging[0];
-      console.log(webhookEvent);
+      console.log(webhookEvent, "instagram");
 
       // Handle the event here
     });
