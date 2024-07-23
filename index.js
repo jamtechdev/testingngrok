@@ -262,7 +262,7 @@ app.get("/webhook", (req, res) => {
 
 app.post("/webhook", (req, res) => {
   const body = req.body;
-  console.log("POST request received", body);
+  console.log("POST request received", JSON.stringify(body, null, 2));
 
   if (body.object === "instagram") {
     body.entry.forEach((entry) => {
