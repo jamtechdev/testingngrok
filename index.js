@@ -46,9 +46,9 @@ const getNewMessages = async () => {
   const ig = new IgApiClient();
   ig.state.generateDevice("heystak.io");
   console.log("IG_USERNAME:", "heystakio");
-  console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
 
   await ig.account.login("heystak.io", "Heystak12!");
+  console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
 
   const inboxFeed = ig.feed.directInbox();
   const threads = await inboxFeed.items();
@@ -60,44 +60,44 @@ const getNewMessages = async () => {
   // In a real application, you would load this from a database or file
   // const processedMessageIds = new Set(loadProcessedMessageIdsFromStorage());
 
-  threads.forEach((thread) => {
-    thread.items.forEach((message) => {
-      if (!processedMessageIds.has(message.fbid)) {
-        // Process the new message
-        console.log("New message:", message.item_type);
-        if (message.item_type === "media_share") {
-          const post_id = message?.media_share?.id;
-          const brand_logo = message?.media_share?.user?.profile_pic_url;
-          const brand_username = message?.media_share?.user?.username;
-          const brand_fullname = message?.media_share?.user?.full_name;
-          const caption_text = message?.media_share?.caption?.text;
-          const ad_id = message?.media_share?.ad_id;
-          const product_images = carousel_media.map(
-            (item) => item.image_versions2.candidates[0].url
-          );
-          const product_link = carousel_media[0].link;
-          console.log(
-            post_id,
-            brand_logo,
-            brand_username,
-            brand_fullname,
-            caption_text,
-            ad_id,
-            product_images,
-            product_link
-          );
-          console.log(JSON.stringify(message?.media_share));
-        }
+  // threads.forEach((thread) => {
+  //   thread.items.forEach((message) => {
+  //     if (!processedMessageIds.has(message.fbid)) {
+  //       // Process the new message
+  //       console.log("New message:", message.item_type);
+  //       if (message.item_type === "media_share") {
+  //         const post_id = message?.media_share?.id;
+  //         const brand_logo = message?.media_share?.user?.profile_pic_url;
+  //         const brand_username = message?.media_share?.user?.username;
+  //         const brand_fullname = message?.media_share?.user?.full_name;
+  //         const caption_text = message?.media_share?.caption?.text;
+  //         const ad_id = message?.media_share?.ad_id;
+  //         const product_images = carousel_media.map(
+  //           (item) => item.image_versions2.candidates[0].url
+  //         );
+  //         const product_link = carousel_media[0].link;
+  //         console.log(
+  //           post_id,
+  //           brand_logo,
+  //           brand_username,
+  //           brand_fullname,
+  //           caption_text,
+  //           ad_id,
+  //           product_images,
+  //           product_link
+  //         );
+  //         console.log(JSON.stringify(message?.media_share));
+  //       }
 
-        // Add the message ID to the set of processed IDs
-        processedMessageIds.add(message.fbid);
+  //       // Add the message ID to the set of processed IDs
+  //       processedMessageIds.add(message.fbid);
 
-        // Save the processed message ID to storage (this is just an example)
-        // In a real application, you would save this to a database or file
-        // saveProcessedMessageIdToStorage(message.item_id);
-      }
-    });
-  });
+  //       // Save the processed message ID to storage (this is just an example)
+  //       // In a real application, you would save this to a database or file
+  //       // saveProcessedMessageIdToStorage(message.item_id);
+  //     }
+  //   });
+  // });
 };
 async function callAnotherApi(userData) {
   try {
