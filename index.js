@@ -204,7 +204,7 @@ const inComingDetails = [];
 app.post("/webhook/incoming", async (req, res) => {
   try {
     const data = req.body;
-    console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data));
     console.log(data[0]?.info?.message, data);
     const userData = storeData(data);
     const check = await inComingDetails.find(
@@ -237,39 +237,44 @@ app.post("/webhook/outgoing", async (req, res) => {
   return res.sendStatus(200); // Corrected to use sendStatus
 });
 
-app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "navneet123"; // Replace with your verify token
+const VERIFY_TOKEN = "navneet12"; // Replace with your verify token
 
+app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
+  console.log("GET request received", req.query);
+
   if (mode && token) {
     if (mode === "subscribe" && token === VERIFY_TOKEN) {
       console.log("WEBHOOK_VERIFIED");
-      console.log(challenge);
       res.status(200).send(challenge);
     } else {
+      console.log("Forbidden: Invalid token");
       res.sendStatus(403);
     }
   } else {
+    console.log("Bad Request: Missing mode or token");
     res.sendStatus(400);
   }
 });
+
 app.post("/webhook", (req, res) => {
   const body = req.body;
-  console.log(body);
+  console.log("POST request received", body);
 
   if (body.object === "instagram") {
     body.entry.forEach((entry) => {
       const webhookEvent = entry.messaging[0];
-      console.log(webhookEvent, "instagram");
+      console.log("Instagram Event", webhookEvent);
 
       // Handle the event here
     });
 
     res.status(200).send("EVENT_RECEIVED");
   } else {
+    console.log("Not Found: Object is not Instagram");
     res.sendStatus(404);
   }
 });
