@@ -3,6 +3,7 @@ const axios = require("axios");
 const app = express();
 app.use(express.json());
 const { IgApiClient } = require("instagram-private-api");
+const fs = require('fs');
 const SESSION_FILE_PATH = "./ig_session.json";
 
 // store session
