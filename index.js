@@ -278,7 +278,7 @@ async function login() {
 
   try {
     await ig.simulate.preLoginFlow();
-    const loggedInUser = await ig.account.login("heystakio", "Loaded");
+    const loggedInUser = await ig.account.login("heystakio", "Heystak12!");
     console.log("Logged in successfully:", loggedInUser);
     await ig.simulate.postLoginFlow();
   } catch (error) {
