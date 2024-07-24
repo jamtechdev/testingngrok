@@ -19,6 +19,7 @@
     "inquirer": "^10.1.2",
     "instagram-private-api": "^1.46.1",
     "nodemon": "^3.1.4",
+    "puppeteer": "^22.13.1",
     "sendpulse-api": "^1.1.7",
     "uuid": "^10.0.0"
   }
