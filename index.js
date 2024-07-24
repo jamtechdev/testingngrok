@@ -277,11 +277,11 @@ app.post("/messaging-webhook", (req, res) => {
   //   });
 
     // Return a '200 OK' response to all requests
-    res.status(200).send("EVENT_RECEIVED");
-  } else {
-    // Return a '404 Not Found' if event is not from a Page subscription
-    res.sendStatus(404);
-  }
+  //   res.status(200).send("EVENT_RECEIVED");
+  // } else {
+  //   // Return a '404 Not Found' if event is not from a Page subscription
+  //   res.sendStatus(404);
+  // }
 });
 
 const PORT = process.env.PORT || 8090;
