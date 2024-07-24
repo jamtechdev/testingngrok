@@ -268,7 +268,7 @@ app.post("/messaging-webhook", (req, res) => {
   if (body.object === "instagram") {
     body.entry.forEach(function (entry) {
       // Handle the webhook event
-      let webhookEvent = entry.messaging;
+      let webhookEvent = entry;
       console.log(JSON.stringify(webhookEvent) , "neetx");
 
       // Perform actions based on the webhook event type
