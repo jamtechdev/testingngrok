@@ -248,6 +248,8 @@ app.get("/messaging-webhook", (req, res) => {
     // Check the mode and token sent is correct
     if (mode === "subscribe" && token === VERIFY_TOKEN) {
       // Respond with the challenge token from the request
+      // 2051440315
+
       console.log("WEBHOOK_VERIFIED");
       res.status(200).send(challenge);
     } else {
@@ -266,8 +268,8 @@ app.post("/messaging-webhook", (req, res) => {
   if (body.object === "instagram") {
     body.entry.forEach(function (entry) {
       // Handle the webhook event
-      let webhookEvent = entry.messaging[0];
-      console.log(webhookEvent);
+      let webhookEvent = entry.messaging;
+      console.log(JSON.stringify(webhookEvent) , "neetx");
 
       // Perform actions based on the webhook event type
       // For example, handling comments, likes, etc.
