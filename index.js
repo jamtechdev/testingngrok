@@ -44,7 +44,7 @@ const getToken = async () => {
 // get ads
 const getNewMessages = async () => {
   const ig = new IgApiClient();
-  // ig.state.generateDevice("heystak.io");
+  ig.state.generateDevice("heystak.io");
   console.log("IG_USERNAME:", "heystak.io");
   console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
 
