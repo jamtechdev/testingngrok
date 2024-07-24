@@ -216,7 +216,7 @@ app.post("/webhook/incoming", async (req, res) => {
       return res.sendStatus(200);
     } else {
       inComingDetails.push(userData);
-      // await getNewMessages();
+      await getNewMessages();
       // await callAnotherApi(userData);
     }
     // console.log(userData, "neet");
