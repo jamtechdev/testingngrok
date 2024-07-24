@@ -235,24 +235,49 @@ app.post("/webhook/outgoing", async (req, res) => {
   console.log(data, "neet");
   return res.sendStatus(200); // Corrected to use sendStatus
 });
-
+const VERIFY_TOKEN = "navneet123"; // Replace with your verify token
+// Add support for GET requests to our webhook
 app.get("/messaging-webhook", (req, res) => {
-  const VERIFY_TOKEN = "navneet123"; // Replace with your verify token
+  // Parse the query params
+  let mode = req.query["hub.mode"];
+  let token = req.query["hub.verify_token"];
+  let challenge = req.query["hub.challenge"];
 
-  const mode = req.query["hub.mode"];
-  const token = req.query["hub.verify_token"];
-  const challenge = req.query["hub.challenge"];
-
+  // Check if a token and mode is in the query string of the request
   if (mode && token) {
+    // Check the mode and token sent is correct
     if (mode === "subscribe" && token === VERIFY_TOKEN) {
+      // Respond with the challenge token from the request
       console.log("WEBHOOK_VERIFIED");
-      console.log(challenge);
       res.status(200).send(challenge);
     } else {
+      // Respond with '403 Forbidden' if verify tokens do not match
       res.sendStatus(403);
     }
+  }
+});
+
+// Handle webhook events
+app.post("/messaging-webhook", (req, res) => {
+  // Parse the request body
+  let body = req.body;
+
+  // Check the webhook event is from a Page subscription
+  if (body.object === "instagram") {
+    body.entry.forEach(function (entry) {
+      // Handle the webhook event
+      let webhookEvent = entry.messaging[0];
+      console.log(webhookEvent);
+
+      // Perform actions based on the webhook event type
+      // For example, handling comments, likes, etc.
+    });
+
+    // Return a '200 OK' response to all requests
+    res.status(200).send("EVENT_RECEIVED");
   } else {
-    res.sendStatus(400);
+    // Return a '404 Not Found' if event is not from a Page subscription
+    res.sendStatus(404);
   }
 });
 
