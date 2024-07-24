@@ -41,15 +41,19 @@ const getToken = async () => {
   }
 };
 
+const ig = new IgApiClient();
+let isLoggedIn = false;
+const loginInstagram = async () => {
+  if (!isLoggedIn) {
+    ig.state.generateDevice("heystak.io");
+    console.log("IG_USERNAME:", "heystak.io");
+    console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
+    await ig.account.login("heystak.io", "Heystak12!");
+    isLoggedIn = true;
+  }
+};
 // get ads
 const getNewMessages = async () => {
-  const ig = new IgApiClient();
-  ig.state.generateDevice("heystak.io");
-  console.log("IG_USERNAME:", "heystak.io");
-  console.log("IG_PASSWORD:", "Heystak12!" ? "Loaded" : "Not Loaded");
-
-  await ig.account.login("heystak.io", "Heystak12!");
-
   const inboxFeed = ig.feed.directInbox();
   const threads = await inboxFeed.items();
 
@@ -211,6 +215,7 @@ app.post("/webhook/incoming", async (req, res) => {
         obj.contact_id === userData.contact_id &&
         obj.lastMessage === userData.lastMessage
     );
+    await loginInstagram();
     // console.log(check, "neet", userData, inComingDetails);
     if (check) {
       return res.sendStatus(200);
