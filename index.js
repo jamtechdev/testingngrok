@@ -263,17 +263,18 @@ app.get("/messaging-webhook", (req, res) => {
 app.post("/messaging-webhook", (req, res) => {
   // Parse the request body
   let body = req.body;
+  console.log(JSON.stringify(body) , "neetx");
 
   // Check the webhook event is from a Page subscription
-  if (body.object === "instagram") {
-    body.entry.forEach(function (entry) {
-      // Handle the webhook event
-      let webhookEvent = entry;
-      console.log(JSON.stringify(webhookEvent) , "neetx");
+  // if (body.object === "instagram") {
+  //   body.entry.forEach(function (entry) {
+  //     // Handle the webhook event
+  //     let webhookEvent = entry;
+  //     console.log(JSON.stringify(webhookEvent) , "neetx");
 
-      // Perform actions based on the webhook event type
-      // For example, handling comments, likes, etc.
-    });
+  //     // Perform actions based on the webhook event type
+  //     // For example, handling comments, likes, etc.
+  //   });
 
     // Return a '200 OK' response to all requests
     res.status(200).send("EVENT_RECEIVED");
